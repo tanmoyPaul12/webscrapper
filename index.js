@@ -3,49 +3,40 @@ import cors from "cors";
 import puppeteer from "puppeteer";
 
 const app = express();
-app.use(cors()); 
-const PORT = 8000;
-const URL = "https://tanmoypaul-portfolio.vercel.app";
+app.use(cors());
 
 app.get("/results", async (req, res) => {
-  try {
-    console.log("Launching browser...");
+  const browser = await puppeteer.launch({ headless: "new" });
+  const page = await browser.newPage();
 
-    const browser = await puppeteer.launch({
-      headless: "new"
-    });
+  await page.goto("https://tanmoypaul-portfolio.vercel.app");
 
-    const page = await browser.newPage();
+  const data = await page.evaluate(() => {
+    return {
+      name: document.querySelector("h1")?.innerText,
+      role: document.querySelector("h3")?.innerText,
+      email: document.querySelector("a[href^='mailto']")?.innerText,
+      description: document.querySelector("p")?.innerText
+    };
+  });
 
-    console.log("Opening page...");
-    await page.goto(URL, { waitUntil: "domcontentloaded" });
-
-    console.log("Waiting for H1...");
-    await page.waitForSelector("h1", { timeout: 15000 });
-
-    console.log("Extracting data...");
-
-    const data = await page.evaluate(() => {
-      const name = document.querySelector("h1")?.innerText || "NOT FOUND";
-      const role = document.querySelector("h3")?.innerText || "NOT FOUND";
-      const email = document.querySelector("a[href^='mailto']")?.innerText || "NOT FOUND";
-      const desc = document.querySelector("p")?.innerText || "NOT FOUND";
-
-      return { name, role, email, description: desc };
-    });
-
-    console.log("SCRAPED:", data);
-
-    await browser.close();
-
-    res.json(data);
-
-  } catch (err) {
-    console.log("ERROR:", err.message);
-    res.status(500).json({ error: err.message });
-  }
+  await browser.close();
+  res.json(data);
 });
 
-app.listen(PORT, () => {
-  console.log("Server running at http://localhost:8000");
+app.listen(8000, () => {
+  console.log("Server running on http://localhost:8000");
 });
+
+
+// try {
+//   const response = await fetch(url);
+//   const html = await response.text();
+//   console.log(html);
+// } catch (err) {
+//   console.log(err);
+// }
+
+// app.listen(PORT, () => {
+//   console.log("Server running at http://localhost:8000");
+//  });
