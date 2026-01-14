@@ -1,15 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebScraper</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebScraper</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #1e1e2f, #3a3a6a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+     .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      /* min-width: 300px; */
+      width: auto;
+      max-width: 600px;
+    } 
+    h1 {
+      margin-bottom: 20px;
+    }
+    #feed {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Scraped Portfolio Data</h1>
-<div id="feed">Loading...</div>
+  <div class="container">
+    <h1>Scraped Portfolio Data</h1>
+    <div id="feed">Loading...</div>
+  </div>
 
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
